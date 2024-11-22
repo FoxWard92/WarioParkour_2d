@@ -1,0 +1,25 @@
+body{
+    margin: 0%;
+    height: 100vh;
+    background-color: rgb(61, 61, 61);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section{
+    height: 95vh;
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white; 
+    border-radius: 5vw;
+}
+
+article{
+    height: 30%;
+    width: 40%;
+    background-color: beige;
+    border-radius: 1vw;
+}
