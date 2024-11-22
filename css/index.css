@@ -13,7 +13,10 @@ section{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-image: url(../img/background/index.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     backdrop-filter: blur(1vw);
     box-shadow: 0vw 0vw 0.5vw 1vw rgb(70, 70, 70);
     border-radius: 5vw;
@@ -25,4 +28,39 @@ article{
     backdrop-filter: blur(1vw);
     box-shadow: 0vw 0vw 0.5vw 0.1vw rgb(80, 80, 80);
     border-radius: 1vw;
+}
+
+header{
+    height: 90%;
+    width: 100%;
+    background-color: aqua;
+}
+
+footer{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    background-color: azure;
+    justify-content: space-around;
+    align-items: start;
+}
+
+button{
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+button:hover{
+    background-color: rgba(230, 230, 230, 0.534);
+}
+
+footer>button{
+    width: 30%;
+    height: 80%;
+    background-color: transparent;
+    border: none;
+    box-shadow: 0vw 0.1vw 1vw 0.1vw rgb(58, 58, 58);
+    border-bottom-left-radius: 1vw;
+    border-bottom-right-radius: 1vw;
 }
