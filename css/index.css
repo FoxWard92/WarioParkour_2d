@@ -1,7 +1,7 @@
 body{
     margin: 0%;
     height: 100vh;
-    background-color: rgb(61, 61, 61);
+    background-color: rgb(40, 40, 40);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,13 +13,16 @@ section{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white; 
+    background-color: white;
+    backdrop-filter: blur(1vw);
+    box-shadow: 0vw 0vw 0.5vw 1vw rgb(70, 70, 70);
     border-radius: 5vw;
 }
 
 article{
     height: 30%;
     width: 40%;
-    background-color: beige;
+    backdrop-filter: blur(1vw);
+    box-shadow: 0vw 0vw 0.5vw 0.1vw rgb(80, 80, 80);
     border-radius: 1vw;
 }
