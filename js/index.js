@@ -15,7 +15,15 @@ const firebaseConfig = {
 
 };
 
+let localdata = null
+
 const app = initializeApp(firebaseConfig);
 
 const analytics = getAnalytics(app);
 
+window.onload = async function(){
+    const gamelocaldata = localStorage.getItem('utente');
+    if(gamelocaldata != null){
+        localdata = JSON.parse(gamelocaldata)
+    }
+}
