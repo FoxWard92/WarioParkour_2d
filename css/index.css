@@ -120,10 +120,34 @@ input{
     border: solid red 0.5vw;
 }
 
+.atload{
+    animation: atload 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+#loadbar{
+    opacity: 0;
+    width: 20%;
+    height: 20%;
+    background-image: url(../img/brand/loadbar.gif);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 40%;
+    left: 75%;
+}
+
 @keyframes Wrong {
     0%{transform: translateX(0%)};
     25%{transform: translateX(2%)};
     50%{transform: translateX(-2%)};
     75%{transform: translateX(2%)};
     100%{transform: translateX(0%)};
+}
+
+@keyframes atload {
+    0%{opacity: 1;}
+    100%{opacity: 1;}
 }

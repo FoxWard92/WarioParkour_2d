@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
 const firebaseConfig = {
 
@@ -23,7 +23,10 @@ const analytics = getAnalytics(app);
 
 const database = getDatabase(app);
 
+const loadbar = document.getElementById('loadbar')
+
 window.onload = async function(){
+    loadbar.classList.add('atload')
     const gamelocaldata = localStorage.getItem('utente');
     if(gamelocaldata != null){
         localdata = JSON.parse(gamelocaldata)
@@ -33,7 +36,7 @@ window.onload = async function(){
         screenchange('gamemanager','block',1);
         screenchange('gameuser','flex',0);
     }
-
+    loadbar.classList.remove('atload')
 }
 
 window.screenchange = function(Class,Display,Index){
@@ -57,7 +60,7 @@ window.Wrong = function(Wrong){
 }
 
 window.isStringContains = function(string,chars){
-    if(string === '') {return false}
+    if(string == '') {return true}
     for(var i = string.length-1;i >= 0;i--){
         for(var x = chars.length-1;x >= 0; x--){
             if(string.charAt(i) == chars[x]){
@@ -69,39 +72,65 @@ window.isStringContains = function(string,chars){
 }
 
 window.login = async function(){
+    loadbar.classList.add('atload')
     const nome = document.getElementById('loginname')
-    if(nome.value == ''){Wrong(nome); return null}
-    const password = document.getElementById('loginpassword')
-    const data = await getDataForNode(`utenti/${nome.value}`)
-    if(data){
-        if(data.dati.password == password.value){
-            localdata = data
-            localStorage.setItem('utente',JSON.stringify(data))
-            screenchange('gamemanager','block',0);
-            screenchange('gamestat','flex',0);
-        }else{
-            Wrong(password)
-        }
+    if(isStringContains(nome.value,[])){
+        Wrong(nome);
     }else{
-        Wrong(nome)
+        const password = document.getElementById('loginpassword')
+        const data = await getDataForNode(`utenti/${nome.value}`)
+        if(data){
+            if(data.dati.password == password.value){
+                localdata = data
+                localStorage.setItem('utente',JSON.stringify(data))
+                screenchange('gamemanager','block',0);
+                screenchange('gamestat','flex',0);
+            }else{
+                Wrong(password)
+            }
+        }else{
+            Wrong(nome)
+        }
     }
+    loadbar.classList.remove('atload');
 }
 
 window.register = async function () {
+
+    loadbar.classList.add('atload')
+
     const name = document.getElementById('registername')
-
-    if(isStringContains(name.value,[' ']) || await getDataForNode(`utenti/${name.value}`)){Wrong(name); return null}
-
     const password = document.getElementById('registerpassword')
-
-    if(isStringContains(password.value,[' ','|','.',':',',',';'])){Wrong(password); return null}
-
     const confermapassword = document.getElementById('registerconfermapassword')
 
-    if(password.value != confermapassword.value){Wrong(confermapassword); return null}
+    if(isStringContains(name.value,[' ']) || await getDataForNode(`utenti/${name.value}`)){
+        Wrong(name); 
+    }else if(isStringContains(password.value,[' ','|','.',':',',',';'])){
+        Wrong(password);
+    }else if(password.value != confermapassword.value){
+        Wrong(confermapassword);
+    }else{
 
+    const data = {
+        dati : {
+            name : name.value,
+            password : password.value
+        },
+        saves : {
+            
+        }
+    }
+
+    await addElementToNode(`utenti/${name.value}`,data)
+
+    screenchange('gameuser','flex',0);}
+
+    loadbar.classList.remove('atload');
+}
+
+window.logout = function() {
+    screenchange('gamemanager','block',1);
     screenchange('gameuser','flex',0);
-
 }
 
 window.getDataForNode = async function (NodeId) {
@@ -116,5 +145,14 @@ window.getDataForNode = async function (NodeId) {
     } catch (error) {
         console.error("Error getting data:", error);
         return null
+    }
+};
+
+window.addElementToNode = async function (nodeId, elementData) {
+    const dbRef = ref(database, `/${nodeId}`);
+    try {
+        await set(dbRef, elementData);
+    } catch (error) {
+        console.error("Errore durante l'aggiunta dell'elemento:", error);
     }
 };
