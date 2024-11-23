@@ -25,5 +25,20 @@ window.onload = async function(){
     const gamelocaldata = localStorage.getItem('utente');
     if(gamelocaldata != null){
         localdata = JSON.parse(gamelocaldata)
+        screenchange('gamemanager','block',0);
+    }else{
+        screenchange('gamemanager','block',1);
+    }
+
+}
+
+window.screenchange = function(Class,Display,Index){
+    const arr = document.getElementsByClassName(`${Class}`)
+    for(var i = arr.length-1; i >= 0;i--){
+        if(i == Index){
+            arr[i].style.display = Display;
+        }else{
+            arr[i].style.display = 'none';
+        }
     }
 }

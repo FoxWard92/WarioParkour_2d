@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/index.css" type="text/css">
+    <script src="js/index.js" type="module" defer></script>
     <title>Document</title>
 </head>
 <body>
     <section>
         
-        <article id="menu">
+        <article id="menu" class="gamemanager">
             <header>
                 <div id="saveiconscreen"></div>
                 <nav>
@@ -22,24 +23,29 @@
             </footer>
         </article>
 
-        <article id="accesso">
-            <header id="login">
-                <input type="text" id="name">
-                <input type="text" id="passworld">
+        <article id="accesso" class="gamemanager">
+            <header id="login" class="gameuser">
+                <div>
+                    <input type="text" id="name" placeholder="nome">
+                    <input type="text" id="passworld" placeholder="password">
+                </div>
                 <nav>
                     <button>Gioca</button>
                 </nav>
             </header>
-            <header id="register">
-                <input type="text" id="name">
-                <input type="text" id="passworld">
+            <header id="register" class="gameuser">
+                <div>
+                    <input type="text" id="name" placeholder="nome">
+                    <input type="text" id="password" placeholder="password">
+                    <input type="text" id="confermapassword" placeholder="conferma password">
+                </div>
                 <nav>
-                    <button>Gioca</button>
+                    <button>Registrati</button>
                 </nav>
             </header>
             <footer>
-                <button>Login</button>
-                <button>Registrati</button>
+                <button onclick="screenchange('gameuser','flex',0)">Login</button>
+                <button onclick="screenchange('gameuser','flex',1)">Registrati</button>
             </footer>
         </article>
     </section>
