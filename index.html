@@ -11,36 +11,46 @@
     <section>
         
         <article id="menu" class="gamemanager">
-            <header>
+            <header class="gamestat">
                 <div id="saveiconscreen"></div>
                 <nav>
                     <button>Nuova Parita [+]</button>
                 </nav>
             </header>
+            <header class="gamestat">
+                <div>
+                    <button>Musica</button>
+                    <button>Effetti</button>
+                    <button>Stats</button>
+                </div>
+                <nav>
+                    <button onclick="logout()">Log Out</button>
+                </nav>
+            </header>
             <footer>
-                <button>Mondi</button>
-                <button>Impostazioni</button>
+                <button onclick="screenchange('gamestat','flex',0)">Mondi</button>
+                <button onclick="screenchange('gamestat','flex',1)">Impostazioni</button>
             </footer>
         </article>
 
         <article id="accesso" class="gamemanager">
             <header id="login" class="gameuser">
                 <div>
-                    <input type="text" id="name" placeholder="nome">
-                    <input type="text" id="passworld" placeholder="password">
+                    <input type="text" id="loginname" placeholder="nome">
+                    <input type="text" id="loginpassword" placeholder="password">
                 </div>
                 <nav>
-                    <button>Gioca</button>
+                    <button onclick="login()">Gioca</button>
                 </nav>
             </header>
             <header id="register" class="gameuser">
                 <div>
-                    <input type="text" id="name" placeholder="nome">
-                    <input type="text" id="password" placeholder="password">
-                    <input type="text" id="confermapassword" placeholder="conferma password">
+                    <input type="text" id="registername" placeholder="nome">
+                    <input type="text" id="registerpassword" placeholder="password">
+                    <input type="text" id="registerconfermapassword" placeholder="conferma password">
                 </div>
                 <nav>
-                    <button>Registrati</button>
+                    <button onclick="register()">Registrati</button>
                 </nav>
             </header>
             <footer>

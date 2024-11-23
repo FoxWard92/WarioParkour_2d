@@ -34,7 +34,7 @@ article{
 header{
     height: 90%;
     width: 100%;
-    display: flex;
+    display: none;
     justify-content: space-around;
     align-items: center;
 }
@@ -112,6 +112,18 @@ input{
     border-radius: 1vw;
 }
 
-#register{
-    display: none;
+.Wrong{
+    animation: Wrong 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    border: solid red 0.5vw;
+}
+
+@keyframes Wrong {
+    0%{transform: translateX(0%)};
+    25%{transform: translateX(2%)};
+    50%{transform: translateX(-2%)};
+    75%{transform: translateX(2%)};
+    100%{transform: translateX(0%)};
 }
