@@ -37,6 +37,7 @@ window.onload = async function(){
         screenchange('gameuser','flex',0);
     }
     loadbar.classList.remove('atload')
+    
 }
 
 window.screenchange = function(Class,Display,Index){
@@ -48,6 +49,7 @@ window.screenchange = function(Class,Display,Index){
             arr[i].style.display = 'none';
         }
     }
+    ReloadServerList()
 }
 
 window.Wrong = function(Wrong){
@@ -69,6 +71,28 @@ window.isStringContains = function(string,chars){
         }
     }
     return false
+}
+
+window.ReloadServerList = async function(){
+    
+    const listaserver =  document.getElementById('listaserver')
+
+    const gameserver = await getDataForNode('gameserver');
+
+    if(gameserver.length){
+        listaserver.firstElementChild.remove()
+
+        const ul = document.createElement('ul')
+
+        for(var i = gameserver.length-1; i >= 0;i--){
+            const li =  document.createElement('li')
+            li.innerText = gameserver[i].servername
+            ul.appendChild(li)
+        }
+    
+        listaserver.appendChild(ul)
+    }
+    
 }
 
 window.login = async function(){
@@ -110,16 +134,14 @@ window.register = async function () {
     }else if(password.value != confermapassword.value){
         Wrong(confermapassword);
     }else{
-
-    const data = {
-        dati : {
-            name : name.value,
-            password : password.value
-        },
-        saves : {
-            
+        const data = {
+           dati : {
+              name : name.value,
+              password : password.value
+           },
+           saves : { 
+           }
         }
-    }
 
     await addElementToNode(`utenti/${name.value}`,data)
 

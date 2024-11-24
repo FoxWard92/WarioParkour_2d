@@ -13,9 +13,14 @@
         <article id="menu" class="gamemanager">
             <header class="gamestat">
                 <div id="saveiconscreen"></div>
-                <nav>
-                    <button>Nuova Parita [+]</button>
-                </nav>
+                <div class="flex-column">
+                    <h2>Server Publici</h2>
+                    <div id="listaserver">
+                       <ul>
+                         <li>Nessun Server</li>
+                       </ul>
+                    </div>
+                </div>
             </header>
             <header class="gamestat">
                 <div>
@@ -23,9 +28,9 @@
                     <button>Effetti</button>
                     <button>Stats</button>
                 </div>
-                <nav>
+                <div class="button-container-manager">
                     <button onclick="logout()">Log Out</button>
-                </nav>
+                </div>
             </header>
             <footer>
                 <button onclick="screenchange('gamestat','flex',0)">Lobby</button>
@@ -39,9 +44,9 @@
                     <input type="text" id="loginname" placeholder="nome">
                     <input type="text" id="loginpassword" placeholder="password">
                 </div>
-                <nav>
+                <div class="button-container-manager">
                     <button onclick="login()">Gioca</button>
-                </nav>
+                </div>
             </header>
             <header id="register" class="gameuser">
                 <div>
@@ -49,9 +54,9 @@
                     <input type="text" id="registerpassword" placeholder="password">
                     <input type="text" id="registerconfermapassword" placeholder="conferma password">
                 </div>
-                <nav>
+                <div class="button-container-manager">
                     <button onclick="register()">Registrati</button>
-                </nav>
+                </div>
             </header>
             <footer>
                 <button onclick="screenchange('gameuser','flex',0)">Login</button>
