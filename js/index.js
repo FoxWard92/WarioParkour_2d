@@ -32,6 +32,7 @@ window.onload = async function(){
         localdata = JSON.parse(gamelocaldata)
         screenchange('gamemanager','block',0);
         screenchange('gamestat','flex',0);
+        screenchange('gameserver','flex',0)
     }else{
         screenchange('gamemanager','block',1);
         screenchange('gameuser','flex',0);
@@ -77,22 +78,47 @@ window.ReloadServerList = async function(){
     
     const listaserver =  document.getElementById('listaserver')
 
+    const ServerInfo = document.getElementById('ServerInfo');
+
     const gameserver = await getDataForNode('gameserver');
 
-    if(gameserver.length){
+    const len = Object.keys(gameserver).length
+
+    
+    if(len){
         listaserver.firstElementChild.remove()
 
         const ul = document.createElement('ul')
 
-        for(var i = gameserver.length-1; i >= 0;i--){
+        for (const chiave in gameserver){
             const li =  document.createElement('li')
-            li.innerText = gameserver[i].servername
+
+            const divtext = [chiave,`${len}/${gameserver[chiave].maxplayer}`]
+
+            for(const text in divtext){
+                const div = document.createElement('div')
+                div.innerText = divtext[text]
+                li.appendChild(div)
+            }
+
+            li.onclick = function(){
+
+                screenchange('gameserver','flex',1)
+
+                ServerInfo.children[0].style.backgroundImage = `url(../img/scene/icon/${gameserver[chiave].scena}.jpg)`
+
+                ServerInfo.children[2].innerText = `Entra In | ${chiave}`
+
+            }
+
             ul.appendChild(li)
         }
     
         listaserver.appendChild(ul)
+    }else{
+        listaserver.firstElementChild.firstElementChild.innerText = 'Nessun Server'
     }
-    
+
 }
 
 window.login = async function(){

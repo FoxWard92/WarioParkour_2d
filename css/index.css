@@ -8,14 +8,38 @@ body{
 }
 
 h2,button{
+    margin: 0%;
     text-transform: uppercase;
 }
 
 ul{
+    height: 100%;
     padding: 0px;
+    margin: 0%;
     text-align: center;
     list-style: none;
     overflow-y: scroll;
+}
+
+li{
+    margin-top: 10%;
+    padding: 5%;
+    font-size: x-large;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    border-right:  solid white 0.2vw;
+    border-top:  solid white 0.2vw;
+    border-left:  solid gray 0.2vw;
+    border-bottom:  solid gray 0.2vw;
+}
+
+li:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+    border-left:  solid white 0.2vw;
+    border-bottom:  solid white 0.2vw;
+    border-right:  solid gray 0.2vw;
+    border-top:  solid gray 0.2vw;
 }
 
 section{
@@ -98,6 +122,10 @@ footer>button:last-child{
     background: radial-gradient(circle, rgb(170, 170, 170) 0%, rgba(11, 11, 11, 0.700) 100%);
 }
 
+.button-container-action>button{
+    color: white;
+}
+
 button{
     cursor: pointer;
     font-weight: bolder;
@@ -143,11 +171,22 @@ input{
     left: 75%;
 }
 
+#icon{
+    height: 50%;
+    width: 50%;
+    border-radius: 1vw;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 #listaserver{
-    height: 70%;
+    height: 50%;
     width: 70%;
     border-top: solid 0.2vw gray;
+    border-bottom: solid gray 0.2vw;
 }
+
 
 @keyframes Wrong {
     0%{transform: translateX(0%)};

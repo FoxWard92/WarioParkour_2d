@@ -12,13 +12,25 @@
         <div id="loadbar"></div>
         <article id="menu" class="gamemanager">
             <header class="gamestat">
-                <div id="saveiconscreen"></div>
-                <div class="flex-column">
+                <div id="ServerCreate" class="gameserver">
+                    <div id="icon"></div>
+                    <p></p>
+                    <button>Crea Server</button>
+                </div>
+                <div id="ServerInfo" class="gameserver">
+                    <div id="icon"></div>
+                    <p></p>
+                    <button>Entra In</button>
+                </div>
+                <div>
                     <h2>Server Publici</h2>
                     <div id="listaserver">
                        <ul>
-                         <li>Nessun Server</li>
+                         <li>Caricamento Server ...</li>
                        </ul>
+                    </div>
+                    <div class="button-container-action">
+                        <button onclick="screenchange('gameserver','flex',0)">Crea Server [+]</button>
                     </div>
                 </div>
             </header>
