@@ -46,6 +46,11 @@ p{
     margin: 0%;
 }
 
+input{
+    color: white;
+    background-color: rgba(128, 128, 128, 0.700);
+}
+
 section{
     height: 95vh;
     width: 95%;
@@ -151,9 +156,10 @@ button:hover{
     background-color: rgba(230, 230, 230, 0.534);
 }
 
-input{
-    color: white;
-    background-color: rgba(128, 128, 128, 0.700);
+.gameserver{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 header>div:first-child>input{
@@ -220,12 +226,6 @@ header>div:first-child>div>input{
 #ServerCreateForm{
     width: 40%;
     height: 50%;
-}
-
-#ServerInfo,#ServerCreate{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
 }
 
 
