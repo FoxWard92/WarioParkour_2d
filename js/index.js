@@ -96,8 +96,11 @@ window.ReloadServerList = async function(){
             const divtext = [chiave,`${len}/${gameserver[chiave].maxplayer}`]
 
             for(const text in divtext){
+                
                 const div = document.createElement('div')
+
                 div.innerText = divtext[text]
+
                 li.appendChild(div)
             }
 
@@ -152,6 +155,7 @@ window.login = async function(){
                 localStorage.setItem('utente',JSON.stringify(data))
                 screenchange('gamemanager','block',0);
                 screenchange('gamestat','flex',0);
+                screenchange('gameserver','flex',0)
             }else{
                 Wrong(password)
             }
