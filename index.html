@@ -14,13 +14,25 @@
             <header class="gamestat">
                 <div id="ServerCreate" class="gameserver">
                     <div id="icon"></div>
-                    <p></p>
-                    <button>Crea Server</button>
+                    <div id="ServerCreateForm">
+                        <input type="text" placeholder="nome server">
+                        <input type="number" id="maxplayerselector" min="1" max="2" placeholder="max players">
+                        <input type="number" id="maxplayerselector" min="1" max="2" placeholder="scena di gioco">
+                    </div>
+                    <div class="button-container-action">
+                        <button>Crea Server</button>
+                    </div>
                 </div>
                 <div id="ServerInfo" class="gameserver">
                     <div id="icon"></div>
+                    <div id="listaplayer">
+                        <ul>
+                        </ul>
+                    </div>
                     <p></p>
-                    <button>Entra In</button>
+                    <div class="button-container-action">
+                        <button>Entra In</button>
+                    </div>
                 </div>
                 <div>
                     <h2>Server Publici</h2>

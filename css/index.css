@@ -7,24 +7,24 @@ body{
     align-items: center;
 }
 
-h2,button{
+h2{
     margin: 0%;
     text-transform: uppercase;
 }
 
 ul{
     height: 100%;
-    padding: 0px;
     margin: 0%;
+    padding: 0px;
     text-align: center;
     list-style: none;
     overflow-y: scroll;
 }
 
 li{
-    margin-top: 10%;
+    margin-top: 5%;
     padding: 5%;
-    font-size: x-large;
+    font-size: large;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -40,6 +40,10 @@ li:hover{
     border-bottom:  solid white 0.2vw;
     border-right:  solid gray 0.2vw;
     border-top:  solid gray 0.2vw;
+}
+
+p{
+    margin: 0%;
 }
 
 section{
@@ -122,9 +126,20 @@ footer>button:last-child{
     background: radial-gradient(circle, rgb(170, 170, 170) 0%, rgba(11, 11, 11, 0.700) 100%);
 }
 
-.button-container-action>button{
-    color: white;
+.button-container-action{
+    width: 70%;
+    height: 10%;
 }
+
+.button-container-action>button{
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-top: solid gray 0.2vw;
+    border-bottom-left-radius: 1vw;
+    border-bottom-right-radius: 1vw;
+}
+
 
 button{
     cursor: pointer;
@@ -137,11 +152,20 @@ button:hover{
 }
 
 input{
-    height: 20%;
-    width: 80%;
     color: white;
     background-color: rgba(128, 128, 128, 0.700);
+}
+
+header>div:first-child>input{
+    height: 20%;
+    width: 80%;
     border-radius: 1vw;
+}
+
+header>div:first-child>div>input{
+    margin-top: 5%;
+    height: 20%;
+    width: 80%;
 }
 
 .Wrong{
@@ -178,13 +202,30 @@ input{
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    background-image: url(../img/scene/icon/1.jpg);
 }
 
 #listaserver{
     height: 50%;
     width: 70%;
     border-top: solid 0.2vw gray;
-    border-bottom: solid gray 0.2vw;
+}
+
+#listaplayer{
+    height: 50%;
+    width: 40%; 
+    border-top: solid 0.2vw gray;  
+}
+
+#ServerCreateForm{
+    width: 40%;
+    height: 50%;
+}
+
+#ServerInfo,#ServerCreate{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 

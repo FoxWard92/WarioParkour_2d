@@ -103,12 +103,29 @@ window.ReloadServerList = async function(){
 
             li.onclick = function(){
 
-                screenchange('gameserver','flex',1)
-
                 ServerInfo.children[0].style.backgroundImage = `url(../img/scene/icon/${gameserver[chiave].scena}.jpg)`
 
-                ServerInfo.children[2].innerText = `Entra In | ${chiave}`
+                const listaplayer = ServerInfo.children[1]
 
+                listaplayer.firstElementChild.remove()
+
+                const ul = document.createElement('ul')
+
+                for(const player in gameserver[chiave].players){
+                    const li = document.createElement('li')
+
+                    li.innerText = player
+
+                    ul.appendChild(li)
+                }
+
+                listaplayer.appendChild(ul)
+
+                ServerInfo.children[2].innerText = `Max Player | ${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
+
+                ServerInfo.children[3].firstElementChild.innerText = `Entra In | ${chiave}`
+
+                screenchange('gameserver','flex',1)
             }
 
             ul.appendChild(li)
