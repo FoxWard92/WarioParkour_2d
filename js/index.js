@@ -77,8 +77,6 @@ window.ReloadServerList = async function(){
     
     const ServerLista = document.getElementById('ServerLista')
 
-    const ServerInfo = document.getElementById('ServerInfo');
-
     const gameserver = await getDataForNode('gameserver');
 
     const len = Object.keys(gameserver).length
@@ -105,37 +103,54 @@ window.ReloadServerList = async function(){
 
             li.onclick = function(){
 
-                const listaplayer = ServerInfo.firstElementChild
-
-                ServerInfo.firstElementChild.firstElementChild.src = `../img/scene/icon/${gameserver[chiave].scena}.jpg`
-
-                listaplayer.lastElementChild.remove()
-
-                const ul = document.createElement('ul')
-
-                for(const player in gameserver[chiave].players){
-                    const li = document.createElement('li')
-
-                    li.innerText = player
-
-                    ul.appendChild(li)
-                }
-
-                listaplayer.appendChild(ul)
-
-                ServerInfo.children[1].innerText = `Max Player | ${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
-
-                ServerInfo.children[2].firstElementChild.innerText = `Entra In | ${chiave}`
+                LoadEnterGame(gameserver,chiave)
             }
 
             ul.appendChild(li)
         }
     
         ServerLista.appendChild(ul)
+
+        LoadEnterGame(gameserver,Object.keys(gameserver)[0])
+
     }else{
+
         ServerLista.firstElementChild.firstElementChild.innerText = 'Nessun Server'
+
+        LoadEnterGame(null)
     }
 
+}
+
+window.LoadEnterGame = function(gameserver,chiave){
+
+    const ServerInfo = document.getElementById('ServerInfo');
+
+    const listaplayer = ServerInfo.firstElementChild
+
+    if(gameserver !=  null){
+        listaplayer.firstElementChild.src = `../img/scene/icon/${gameserver[chiave].scena}.jpg`
+
+        listaplayer.lastElementChild.remove()
+    
+        const ul = document.createElement('ul')
+
+        for(const player in gameserver[chiave].players){
+            const li = document.createElement('li')
+    
+            li.innerText = player
+    
+            ul.appendChild(li)
+        }
+    
+        listaplayer.appendChild(ul)
+    
+        ServerInfo.children[1].innerText = `Max Player | ${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
+    
+        ServerInfo.children[2].firstElementChild.innerText = `Entra In | ${chiave}`
+
+    }
+    
 }
 
 window.login = async function(){
