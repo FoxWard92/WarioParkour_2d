@@ -156,7 +156,7 @@ window.ReloadServerInfo = function(gameserver,chiave){
         button.innerText = `Entra In | ${chiave}`
 
         button.onclick = function(){
-            EntraInGame(gameserver,chiave)
+            EntraInGame(gameserver,chiave,button)
         } 
 
         ServerInfo.appendChild(p)
@@ -167,29 +167,37 @@ window.ReloadServerInfo = function(gameserver,chiave){
     
 }
 
-window.EntraInGame =  function (gameserver,chiave){
+window.EntraInGame = async function (gameserver,chiave,button){
 
     loadbar.classList.add('atload')
 
-    const localgame = {
-        serverkey : chiave,
-        [localdata.dati.nome] : {
-            posx:0,
-            posy:0,
-            ping:1
-        },
-        players: gameserver[chiave].players
+    if(await getDataForNode(`gameserver/${chiave}/players/${localdata.dati.nome}`)){
+        Wrong(button)
+        loadbar.classList.remove('atload')
+    }else{
+
+        const localgame = {
+            serverkey : chiave,
+            players : {
+                ...gameserver[chiave].players,
+                [localdata.dati.nome] : {
+                    posx:0,
+                    posy:0,
+                    ping:1
+                }
+            }
+        }
+
+        localStorage.setItem('localgame',JSON.stringify(localgame))
+
+        console.log(localgame)
+    
+        loadbar.classList.remove('atload')
+    
+        //history.replaceState(null, '', 'html/game.html');
+
+        //location.reload();
     }
-
-    localStorage.setItem('localgame',JSON.stringify(localgame))
-
-    console.log(localgame)
-
-    loadbar.classList.remove('atload')
-
-    //history.replaceState(null, '', 'html/game.html');
-
-    //location.reload();
 }
 
 window.login = async function(){
