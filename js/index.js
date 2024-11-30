@@ -172,13 +172,24 @@ window.EntraInGame =  function (gameserver,chiave){
     loadbar.classList.add('atload')
 
     const localgame = {
-        ServerKey : chiave,
-        IsHost
+        serverkey : chiave,
+        [localdata.dati.nome] : {
+            posx:0,
+            posy:0,
+            ping:1
+        },
+        players: gameserver[chiave].players
     }
 
-    console.log(gameserver)
+    localStorage.setItem('localgame',JSON.stringify(localgame))
+
+    console.log(localgame)
 
     loadbar.classList.remove('atload')
+
+    //history.replaceState(null, '', 'html/game.html');
+
+    //location.reload();
 }
 
 window.login = async function(){
@@ -193,6 +204,7 @@ window.login = async function(){
             if(data.dati.password == password.value){
                 localdata = data
                 localStorage.setItem('utente',JSON.stringify(data))
+                await ReloadServerList()
                 screenchange('gamemanager','block',0);
                 screenchange('gamestat','flex',0);
             }else{
