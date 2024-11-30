@@ -78,11 +78,9 @@ window.ReloadServerList = async function(){
     const ServerLista = document.getElementById('ServerLista')
 
     const gameserver = await getDataForNode('gameserver');
-
-    const len = Object.keys(gameserver).length
-
     
-    if(len){
+    if(gameserver != null){
+
         ServerLista.lastElementChild.remove()
 
         const ul = document.createElement('ul')
@@ -103,7 +101,7 @@ window.ReloadServerList = async function(){
 
             li.onclick = function(){
 
-                LoadEnterGame(gameserver,chiave)
+                ReloadServerInfo(gameserver,chiave)
             }
 
             ul.appendChild(li)
@@ -111,22 +109,26 @@ window.ReloadServerList = async function(){
     
         ServerLista.appendChild(ul)
 
-        LoadEnterGame(gameserver,Object.keys(gameserver)[0])
+        ReloadServerInfo(gameserver,Object.keys(gameserver)[0])
 
     }else{
 
-        ServerLista.firstElementChild.firstElementChild.innerText = 'Nessun Server'
+        ServerLista.firstElementChild.innerText = 'Nessun Server'
 
-        LoadEnterGame(null)
+        ReloadServerInfo(null)
     }
 
 }
 
-window.LoadEnterGame = function(gameserver,chiave){
+window.ReloadServerInfo = function(gameserver,chiave){
 
     const ServerInfo = document.getElementById('ServerInfo');
 
     const listaplayer = ServerInfo.firstElementChild
+
+    for(var i = ServerInfo.children.length-2;i >= 0;i--){
+        ServerInfo.lastElementChild.remove()
+    }
 
     if(gameserver !=  null){
         listaplayer.firstElementChild.src = `../img/scene/icon/${gameserver[chiave].scena}.jpg`
@@ -144,13 +146,29 @@ window.LoadEnterGame = function(gameserver,chiave){
         }
     
         listaplayer.appendChild(ul)
+
+        const p = document.createElement('p')
+
+        p.innerText = `Max Player | ${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
     
-        ServerInfo.children[1].innerText = `Max Player | ${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
-    
-        ServerInfo.children[2].firstElementChild.innerText = `Entra In | ${chiave}`
+        const button =  document.createElement('button')
+
+        button.innerText = `Entra In | ${chiave}`
+
+        button.onclick = function(){
+            EntraInGame(gameserver,chiave)
+        } 
+
+        ServerInfo.appendChild(p)
+
+        ServerInfo.appendChild(button)
 
     }
     
+}
+
+window.EntraInGame =  function (gameserver,chiave){
+
 }
 
 window.login = async function(){
