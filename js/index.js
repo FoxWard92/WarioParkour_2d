@@ -88,7 +88,7 @@ window.ReloadServerList = async function(){
         for (const chiave in gameserver){
             const li =  document.createElement('li')
 
-            const divtext = [chiave,`${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer}`]
+            const divtext = [chiave,`${gameserver[chiave].players ? Object.keys(gameserver[chiave].players).length:0}/${gameserver[chiave].maxplayer}`]
 
             for(const text in divtext){
                 
@@ -144,19 +144,29 @@ window.ReloadServerInfo = function(gameserver,chiave){
     
             ul.appendChild(li)
         }
-    
+
         listaplayer.appendChild(ul)
 
         const p = document.createElement('p')
 
-        p.innerText = `Max Player | ${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
+        p.innerText = `Max Player | ${gameserver[chiave].players ? Object.keys(gameserver[chiave].players).length:0}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
     
         const button =  document.createElement('button')
 
         button.innerText = `Entra In | ${chiave}`
 
-        button.onclick = function(){
-            EntraInGame(gameserver,chiave,button)
+        button.onclick = async function(){
+
+            loadbar.classList.add('atload')
+
+            const tempdata = await getDataForNode(`gameserver/${chiave}/players`)
+
+            if(tempdata && (tempdata[localdata.dati.nome] != null  ||  gameserver[chiave].maxplayer >= Object.keys(tempdata).length)){
+                Wrong(button)
+            }else{
+                await EntraInGame(gameserver,chiave,button)
+            }
+            loadbar.classList.remove('atload')
         } 
 
         ServerInfo.appendChild(p)
@@ -167,37 +177,33 @@ window.ReloadServerInfo = function(gameserver,chiave){
     
 }
 
-window.EntraInGame = async function (gameserver,chiave,button){
+window.EntraInGame = async function (gameserver,chiave){
 
-    loadbar.classList.add('atload')
-
-    if(await getDataForNode(`gameserver/${chiave}/players/${localdata.dati.nome}`)){
-        Wrong(button)
-        loadbar.classList.remove('atload')
-    }else{
-
-        const localgame = {
-            serverkey : chiave,
-            players : {
-                ...gameserver[chiave].players,
-                [localdata.dati.nome] : {
-                    posx:0,
-                    posy:0,
-                    ping:1
-                }
-            }
+    gameserver[chiave].players[localdata.dati.nome] = {
+            posx:0,
+            posy:0,
+            ping:1
         }
 
-        localStorage.setItem('localgame',JSON.stringify(localgame))
 
-        console.log(localgame)
-    
-        loadbar.classList.remove('atload')
-    
-        //history.replaceState(null, '', 'html/game.html');
+    await addElementToNode(`gameserver/${chiave}/players/${localdata.dati.nome}`, {
+        posx:0,
+        posy:0,
+        ping:1
+    })
 
-        //location.reload();
+    const localgame = {
+        serverkey : chiave,
+        players : gameserver[chiave].players
     }
+
+    localStorage.setItem('localgame',JSON.stringify(localgame))
+
+    console.log(localgame)
+    
+    //history.replaceState(null, '', 'html/game.html');
+
+    //location.reload();
 }
 
 window.login = async function(){

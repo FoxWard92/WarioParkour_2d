@@ -194,7 +194,7 @@ button:hover{
 }
 
 #ServerInfo>div:first-child{
-    height: 50%-5%; 
+    height: 50%; 
     width: 90%;
     display: flex;
     justify-content: space-between;
