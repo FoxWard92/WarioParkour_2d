@@ -13,12 +13,17 @@ h2{
 }
 
 ul{
-    height: 100%;
+    width: 80%;
     margin: 0%;
     padding: 0px;
-    text-align: center;
     list-style: none;
     overflow-y: scroll;
+}
+
+input{
+    height: 20%;
+    width: 80%;
+    border-radius: 1vw;
 }
 
 li{
@@ -137,14 +142,13 @@ footer>button:last-child{
 }
 
 .button-container-action>button{
-    width: 100%;
     height: 100%;
+    width: 100%;
     border: none;
     border-top: solid gray 0.2vw;
     border-bottom-left-radius: 1vw;
     border-bottom-right-radius: 1vw;
 }
-
 
 button{
     cursor: pointer;
@@ -160,18 +164,6 @@ button:hover{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-}
-
-header>div:first-child>input{
-    height: 20%;
-    width: 80%;
-    border-radius: 1vw;
-}
-
-header>div:first-child>div>input{
-    margin-top: 5%;
-    height: 20%;
-    width: 80%;
 }
 
 .Wrong{
@@ -201,32 +193,34 @@ header>div:first-child>div>input{
     left: 75%;
 }
 
-#icon{
-    height: 50%;
-    width: 50%;
-    border-radius: 1vw;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url(../img/scene/icon/1.jpg);
+#ServerInfo>div:first-child{
+    height: 50%-5%; 
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#listaserver{
+#ServerInfo>div>ul{
     height: 50%;
-    width: 70%;
-    border-top: solid 0.2vw gray;
+    width: 50%;     
 }
 
-#listaplayer{
-    height: 50%;
-    width: 40%; 
-    border-top: solid 0.2vw gray;  
+#ServerInfo>p{
+    height: 10%;
+    width: 80%;
+    text-align: center;
+    border: solid gray 0.2vw;
+    border-left: solid aliceblue 0.2vw;
+    border-bottom: solid aliceblue 0.2vw;
 }
 
-#ServerCreateForm{
+#ServerInfo>div>img{
+    height: 90%;
     width: 40%;
-    height: 50%;
+    border-radius: 1vw;
 }
+
 
 
 @keyframes Wrong {

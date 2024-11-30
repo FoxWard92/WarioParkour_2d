@@ -32,7 +32,6 @@ window.onload = async function(){
         localdata = JSON.parse(gamelocaldata)
         screenchange('gamemanager','block',0);
         screenchange('gamestat','flex',0);
-        screenchange('gameserver','flex',0)
     }else{
         screenchange('gamemanager','block',1);
         screenchange('gameuser','flex',0);
@@ -76,7 +75,7 @@ window.isStringContains = function(string,chars){
 
 window.ReloadServerList = async function(){
     
-    const listaserver =  document.getElementById('listaserver')
+    const ServerLista = document.getElementById('ServerLista')
 
     const ServerInfo = document.getElementById('ServerInfo');
 
@@ -86,14 +85,14 @@ window.ReloadServerList = async function(){
 
     
     if(len){
-        listaserver.firstElementChild.remove()
+        ServerLista.lastElementChild.remove()
 
         const ul = document.createElement('ul')
 
         for (const chiave in gameserver){
             const li =  document.createElement('li')
 
-            const divtext = [chiave,`${len}/${gameserver[chiave].maxplayer}`]
+            const divtext = [chiave,`${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer}`]
 
             for(const text in divtext){
                 
@@ -106,11 +105,11 @@ window.ReloadServerList = async function(){
 
             li.onclick = function(){
 
-                ServerInfo.children[0].style.backgroundImage = `url(../img/scene/icon/${gameserver[chiave].scena}.jpg)`
+                const listaplayer = ServerInfo.firstElementChild
 
-                const listaplayer = ServerInfo.children[1]
+                ServerInfo.firstElementChild.firstElementChild.src = `../img/scene/icon/${gameserver[chiave].scena}.jpg`
 
-                listaplayer.firstElementChild.remove()
+                listaplayer.lastElementChild.remove()
 
                 const ul = document.createElement('ul')
 
@@ -124,19 +123,17 @@ window.ReloadServerList = async function(){
 
                 listaplayer.appendChild(ul)
 
-                ServerInfo.children[2].innerText = `Max Player | ${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
+                ServerInfo.children[1].innerText = `Max Player | ${Object.keys(gameserver[chiave].players).length}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
 
-                ServerInfo.children[3].firstElementChild.innerText = `Entra In | ${chiave}`
-
-                screenchange('gameserver','flex',1)
+                ServerInfo.children[2].firstElementChild.innerText = `Entra In | ${chiave}`
             }
 
             ul.appendChild(li)
         }
     
-        listaserver.appendChild(ul)
+        ServerLista.appendChild(ul)
     }else{
-        listaserver.firstElementChild.firstElementChild.innerText = 'Nessun Server'
+        ServerLista.firstElementChild.firstElementChild.innerText = 'Nessun Server'
     }
 
 }
@@ -155,7 +152,6 @@ window.login = async function(){
                 localStorage.setItem('utente',JSON.stringify(data))
                 screenchange('gamemanager','block',0);
                 screenchange('gamestat','flex',0);
-                screenchange('gameserver','flex',0)
             }else{
                 Wrong(password)
             }
