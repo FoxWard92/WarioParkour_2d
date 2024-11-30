@@ -32,6 +32,7 @@ window.onload = async function(){
         localdata = JSON.parse(gamelocaldata)
         screenchange('gamemanager','block',0);
         screenchange('gamestat','flex',0);
+        await ReloadServerList()
     }else{
         screenchange('gamemanager','block',1);
         screenchange('gameuser','flex',0);
@@ -49,7 +50,6 @@ window.screenchange = function(Class,Display,Index){
             arr[i].style.display = 'none';
         }
     }
-    ReloadServerList()
 }
 
 window.Wrong = function(Wrong){
@@ -74,7 +74,7 @@ window.isStringContains = function(string,chars){
 }
 
 window.ReloadServerList = async function(){
-    
+
     const ServerLista = document.getElementById('ServerLista')
 
     const gameserver = await getDataForNode('gameserver');
@@ -169,6 +169,16 @@ window.ReloadServerInfo = function(gameserver,chiave){
 
 window.EntraInGame =  function (gameserver,chiave){
 
+    loadbar.classList.add('atload')
+
+    const localgame = {
+        ServerKey : chiave,
+        IsHost
+    }
+
+    console.log(gameserver)
+
+    loadbar.classList.remove('atload')
 }
 
 window.login = async function(){
