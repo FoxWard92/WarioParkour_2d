@@ -164,7 +164,7 @@ window.ReloadServerInfo = function(gameserver,chiave){
             if(tempdata && (tempdata[localdata.dati.nome] != null  ||  gameserver[chiave].maxplayer >= Object.keys(tempdata).length)){
                 Wrong(button)
             }else{
-                await EntraInGame(gameserver,chiave,button)
+                await EntraInGame(gameserver,chiave)
             }
             loadbar.classList.remove('atload')
         } 
@@ -179,31 +179,29 @@ window.ReloadServerInfo = function(gameserver,chiave){
 
 window.EntraInGame = async function (gameserver,chiave){
 
-    gameserver[chiave].players[localdata.dati.nome] = {
-            posx:0,
-            posy:0,
-            ping:1
-        }
-
+    if(!gameserver[chiave].players){
+        gameserver[chiave].players = {}
+    }
 
     await addElementToNode(`gameserver/${chiave}/players/${localdata.dati.nome}`, {
         posx:0,
-        posy:0,
+        posy:9,
         ping:1
     })
 
     const localgame = {
         serverkey : chiave,
-        players : gameserver[chiave].players
+        nameplayer : localdata.dati.nome,
+        scena : gameserver[chiave].scena,
     }
 
     localStorage.setItem('localgame',JSON.stringify(localgame))
 
     console.log(localgame)
     
-    //history.replaceState(null, '', 'html/game.html');
+    history.replaceState(null, '', 'html/game.html');
 
-    //location.reload();
+    location.reload();
 }
 
 window.login = async function(){
