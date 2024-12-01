@@ -159,8 +159,8 @@ window.controlconnection = async function(playerkey){
         await addElementToNode(`gameserver/${localgame.serverkey}/players/${playerkey}/ping`,0)
     }else{
         delete localgame.players[playerkey]
-        document.getElementById(`${playerkey}`).remove()
         await addElementToNode(`gameserver/${localgame.serverkey}/players`,localgame.players)
+        document.getElementById(`${playerkey}`).remove()
     }
 }
 
