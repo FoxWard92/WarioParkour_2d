@@ -161,7 +161,6 @@ window.ReloadServerInfo = function(gameserver,chiave){
 
             const tempdata = await getDataForNode(`gameserver/${chiave}/players/${localdata.dati.nome}`)
 
-
             if(tempdata && (tempdata[localdata.dati.nome] != null  ||  gameserver[chiave].maxplayer >= Object.keys(tempdata).length)){
                 Wrong(button)
             }else{
