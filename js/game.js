@@ -166,6 +166,11 @@ window.controlconnection = async function(playerkey){
     }
 }
 
+document.addEventListener('keydown', function(event) {
+    if (event.key === playercommand[0]) {
+        console.log('Hai premuto il tasto Enter!');
+    }
+});
 
 window.getDataForNode = async function (NodeId) {
     const dbRef = ref(database, `/${NodeId}`);
