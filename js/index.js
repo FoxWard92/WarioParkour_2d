@@ -81,14 +81,39 @@ window.ReloadServerList = async function(){
     
     if(gameserver != null){
 
-        ServerLista.lastElementChild.remove()
-
         const ul = document.createElement('ul')
 
         for (const chiave in gameserver){
             const li =  document.createElement('li')
 
-            const divtext = [chiave,`${gameserver[chiave].players ? Object.keys(gameserver[chiave].players).length:0}/${gameserver[chiave].maxplayer}`]
+            let numplayer = 0
+
+            const players = gameserver[chiave].players
+
+            if(players){
+                numplayer =  Object.keys(players).length
+
+                if(numplayer === 1){
+                    const player = Object.keys(players)[0]
+                        if(player === localdata.dati.nome){
+                            if(await getDataForNode(`gameserver/${chiave}/players/${player}/ping`)){
+                                await addElementToNode(`gameserver/${chiave}/players/${player}/ping`,0)
+                                await new Promise(resolve => setTimeout(resolve, 1000));
+                            if(!(await getDataForNode(`gameserver/${chiave}/players/${player}/ping`))){
+                                await addElementToNode(`gameserver/${chiave}/players/`,null)
+                                delete gameserver[chiave].players
+                            }
+                        }else{
+                            await addElementToNode(`gameserver/${chiave}/players/`,null)
+                            delete gameserver[chiave].players
+                        }
+                    }
+                }
+            }else{
+                numplayer = 0
+            }
+
+            const divtext = [chiave,`${numplayer}/${gameserver[chiave].maxplayer}`]
 
             for(const text in divtext){
                 
@@ -106,6 +131,8 @@ window.ReloadServerList = async function(){
 
             ul.appendChild(li)
         }
+
+        ServerLista.lastElementChild.remove()
     
         ServerLista.appendChild(ul)
 
