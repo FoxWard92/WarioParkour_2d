@@ -29,6 +29,8 @@ const p = document.getElementById('loadcmd')
 
 const gamescena = document.getElementById('gamescena')
 
+const playercommand = ['w','s','a','d','space','escape']
+
 window.onload = async function(){
     localgame = JSON.parse(localStorage.getItem('localgame'))
     if(localgame != null){
