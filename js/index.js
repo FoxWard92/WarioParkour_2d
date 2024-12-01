@@ -159,7 +159,8 @@ window.ReloadServerInfo = function(gameserver,chiave){
 
             loadbar.classList.add('atload')
 
-            const tempdata = await getDataForNode(`gameserver/${chiave}/players`)
+            const tempdata = await getDataForNode(`gameserver/${chiave}/players/${localdata.dati.nome}`)
+
 
             if(tempdata && (tempdata[localdata.dati.nome] != null  ||  gameserver[chiave].maxplayer >= Object.keys(tempdata).length)){
                 Wrong(button)
