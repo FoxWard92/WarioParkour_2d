@@ -25,12 +25,13 @@ const database = getDatabase(app);
 
 let localscena = null
 
+const p = document.getElementById('loadcmd')
+
+const gamescena = document.getElementById('gamescena')
+
 window.onload = async function(){
     localgame = JSON.parse(localStorage.getItem('localgame'))
     if(localgame != null){
-
-        const p = document.getElementById('loadcmd')
-        const gamescena = document.getElementById('gamescena')
 
         console.log(localgame)
         screenchange('gamepage','block',0)
@@ -53,20 +54,7 @@ window.onload = async function(){
 
         p.innerText = `Recupero Dati Giocatori da ${localgame.serverkey}`
 
-        localgame.players = await getDataForNode(`gameserver/${localgame.serverkey}/players`)
-        
-        for(const chiave in localgame.players){
-            const div = document.createElement('div')
-            const p= document.createElement('p')
-            p.innerText = chiave
-            div.appendChild(p)
-            div.id = chiave
-            div.style.backgroundImage = `url(../img/player/walk.gif)`
-            div.classList.add('players')
-            div.style.left = `${localgame.players[chiave].posx*10}%`
-            div.style.top = `${localgame.players[chiave].posy*10}%`
-            gamescena.appendChild(div)
-        }
+        await reoladplayer()
 
         gamescena.style.backgroundImage = `url(../img/scene/background/${localgame.scena}.jpg)`
 
@@ -109,6 +97,73 @@ window.isStringContains = function(string,chars){
     }
     return false
 }
+
+setInterval(async function(){
+
+    const nameplayer = localgame.nameplayer
+
+    const chiave = Object.keys(localgame.players)
+
+    const len = chiave.length-1;
+
+    if(len > 0){
+        if(chiave[0] === nameplayer){
+            for(var i = len; i >= 1;i--){
+                await controlconnection(chiave[i])
+            }
+        }else if(chiave[len] === nameplayer){
+            await controlconnection(chiave[0])
+        }
+    }
+
+},5000)
+
+setInterval(async function (){
+    const nameplayer = localgame.nameplayer
+
+    await reoladplayer(nameplayer)
+
+    localgame.players[nameplayer].ping = 1
+
+    await addElementToNode(`gameserver/${localgame.serverkey}/players/${nameplayer}/`,localgame.players[nameplayer])
+
+},10)
+
+
+window.reoladplayer = async function(exclude){
+
+    localgame.players = await getDataForNode(`gameserver/${localgame.serverkey}/players`)
+
+    for(const chiave in localgame.players){
+        if(exclude !== chiave){
+            let player = document.getElementById(`${chiave}`)
+            if(!player){
+                const div = document.createElement('div')
+                const p= document.createElement('p')
+                p.innerText = chiave
+                div.appendChild(p)
+                div.id = chiave
+                div.style.backgroundImage = `url(../img/player/walk.gif)`
+                div.classList.add('players')
+                gamescena.appendChild(div)
+                player = div
+            }
+            player.style.left = `${localgame.players[chiave].posx*10}%`
+            player.style.top = `${localgame.players[chiave].posy*10}%`
+        }
+    }
+}
+
+window.controlconnection = async function(playerkey){
+    if(localgame.players[playerkey].ping){
+        await addElementToNode(`gameserver/${localgame.serverkey}/players/${playerkey}/ping`,0)
+    }else{
+        delete localgame.players[playerkey]
+        document.getElementById(`${playerkey}`).remove()
+        await addElementToNode(`gameserver/${localgame.serverkey}/players`,localgame.players)
+    }
+}
+
 
 window.getDataForNode = async function (NodeId) {
     const dbRef = ref(database, `/${NodeId}`);
