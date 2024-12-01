@@ -92,8 +92,6 @@ window.ReloadServerList = async function(){
 
             if(players){
                 numplayer =  Object.keys(players).length
-
-                if(numplayer === 1){
                     const player = Object.keys(players)[0]
                         if(player === localdata.dati.nome){
                             if(await getDataForNode(`gameserver/${chiave}/players/${player}/ping`)){
@@ -108,7 +106,6 @@ window.ReloadServerList = async function(){
                             delete gameserver[chiave].players
                         }
                     }
-                }
             }else{
                 numplayer = 0
             }
