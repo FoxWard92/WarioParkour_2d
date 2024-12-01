@@ -93,7 +93,7 @@ window.ReloadServerList = async function(){
             if(players){
                 numplayer =  Object.keys(players).length
                     const player = Object.keys(players)[0]
-                        if(player === localdata.dati.nome){
+                        if(player === localdata.dati.name){
                             if(await getDataForNode(`gameserver/${chiave}/players/${player}/ping`)){
                                 await addElementToNode(`gameserver/${chiave}/players/${player}/ping`,0)
                                 await new Promise(resolve => setTimeout(resolve, 1000));
@@ -183,9 +183,9 @@ window.ReloadServerInfo = function(gameserver,chiave){
 
             loadbar.classList.add('atload')
 
-            const tempdata = await getDataForNode(`gameserver/${chiave}/players/${localdata.dati.nome}`)
+            const tempdata = await getDataForNode(`gameserver/${chiave}/players/${localdata.dati.name}`)
 
-            if(tempdata && (tempdata[localdata.dati.nome] != null  ||  gameserver[chiave].maxplayer >= Object.keys(tempdata).length)){
+            if(tempdata && (tempdata[localdata.dati.name] != null  ||  gameserver[chiave].maxplayer >= Object.keys(tempdata).length)){
                 Wrong(button)
             }else{
                 await EntraInGame(gameserver,chiave)
@@ -207,7 +207,7 @@ window.EntraInGame = async function (gameserver,chiave){
         gameserver[chiave].players = {}
     }
 
-    await addElementToNode(`gameserver/${chiave}/players/${localdata.dati.nome}`, {
+    await addElementToNode(`gameserver/${chiave}/players/${localdata.dati.name}`, {
         posx:0,
         posy:9,
         ping:1
@@ -215,7 +215,7 @@ window.EntraInGame = async function (gameserver,chiave){
 
     const localgame = {
         serverkey : chiave,
-        nameplayer : localdata.dati.nome,
+        nameplayer : localdata.dati.name,
         scena : gameserver[chiave].scena,
     }
 
