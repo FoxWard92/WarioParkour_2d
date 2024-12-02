@@ -140,9 +140,11 @@ window.reoladplayer = async function(exclude){
         tplayer = {}
     }
 
-    if(!tplayer[localgame.nameplayer]){
+    const nameplayer = localgame.nameplayer
+
+    if(!tplayer[nameplayer]){
         
-        tplayer[localgame.nameplayer] = localgame.players[localgame.nameplayer]
+        tplayer[nameplayer] = localgame.players[nameplayer]
     }
 
     localgame.players = tplayer
@@ -161,8 +163,9 @@ window.reoladplayer = async function(exclude){
                 gamescena.appendChild(div)
                 player = div
             }
-            player.style.left = `${localgame.players[chiave].posx*10}%`
-            player.style.top = `${localgame.players[chiave].posy*10}%`
+            const playerData = localgame.players[chiave];
+            player.style.left = `${playerData.posx*10}%`
+            player.style.top = `${playerData.posy*10}%`
         }
     }
 }
