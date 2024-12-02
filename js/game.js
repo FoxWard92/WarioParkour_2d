@@ -134,7 +134,18 @@ setInterval(async function (){
 
 window.reoladplayer = async function(exclude){
 
-    localgame.players = await getDataForNode(`gameserver/${localgame.serverkey}/players`)
+    let tplayer = await getDataForNode(`gameserver/${localgame.serverkey}/players`)
+
+    if(typeof tplayer !=='object'){
+        tplayer = {}
+    }
+
+    if(!tplayer[localgame.nameplayer]){
+        
+        tplayer[localgame.nameplayer] = localgame.players[localgame.nameplayer]
+    }
+
+    localgame.players = tplayer
 
     for(const chiave in localgame.players){
         if(exclude !== chiave){

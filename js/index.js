@@ -86,31 +86,17 @@ window.ReloadServerList = async function(){
         for (const chiave in gameserver){
             const li =  document.createElement('li')
 
-            let numplayer = 0
-
             const players = gameserver[chiave].players
 
-            if(players){
-                numplayer =  Object.keys(players).length
-                    const player = Object.keys(players)[0]
-                        if(player === localdata.dati.name){
-                            if(await getDataForNode(`gameserver/${chiave}/players/${player}/ping`)){
-                                await addElementToNode(`gameserver/${chiave}/players/${player}/ping`,0)
-                                await new Promise(resolve => setTimeout(resolve, 1000));
-                            if(!(await getDataForNode(`gameserver/${chiave}/players/${player}/ping`))){
-                                await addElementToNode(`gameserver/${chiave}/players/`,null)
-                                delete gameserver[chiave].players
-                            }
-                        }else{
-                            await addElementToNode(`gameserver/${chiave}/players/`,null)
-                            delete gameserver[chiave].players
-                        }
-                    }
-            }else{
-                numplayer = 0
+            for(const player in players){
+                if(player === localdata.dati.name){
+                    delete gameserver[chiave].players[player]
+                    await addElementToNode(`gameserver/${chiave}/players/`,gameserver[chiave].players)
+                    break
+                }
             }
 
-            const divtext = [chiave,`${numplayer}/${gameserver[chiave].maxplayer}`]
+            const divtext = [chiave,`${players ? Object.keys(players).length:0}/${gameserver[chiave].maxplayer}`]
 
             for(const text in divtext){
                 
