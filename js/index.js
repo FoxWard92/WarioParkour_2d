@@ -90,8 +90,9 @@ window.ReloadServerList = async function(){
 
             for(const player in players){
                 if(player === localdata.dati.name){
-                    delete gameserver[chiave].players[player]
-                    await addElementToNode(`gameserver/${chiave}/players/`,gameserver[chiave].players)
+                    let tplayer = gameserver[chiave].players
+                    delete tplayer[player]
+                    await addElementToNode(`gameserver/${chiave}/players/`,tplayer)
                     break
                 }
             }
