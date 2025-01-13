@@ -97,8 +97,6 @@ window.onload = async function(){
             }else{
                 GlobalGravityMove = true
             }
-
-            console.log(GlobalGravityMove)
         
             localgame.players[nameplayer].ping = 1
             await addElementToNode(`gameserver/${localgame.serverkey}/players/${nameplayer}/`,localgame.players[nameplayer])
@@ -265,6 +263,7 @@ function gameLoop() {
 
   for (const key in playercommand) {
     if (keysPressed[playercommand[key]] && (key != 2 || key == 2 && (GlobalGravityMove))) {
+        
         playeraction[key](DataMainplayer, localgame.players[localgame.nameplayer], moveSpeed * deltaTime + (key == 2 ? 20:0));
     }
   }
