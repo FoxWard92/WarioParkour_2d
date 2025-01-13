@@ -25,14 +25,17 @@ const database = getDatabase(app);
 
 let localscena = null
 
+let DataMainplayer = null
+
 const p = document.getElementById('loadcmd')
 
 const gamescena = document.getElementById('gamescena')
 
-const playercommand = ['w','s','a','d','space','escape']
+const playercommand = ['a','d','w','escape']
 
 window.onload = async function(){
     localgame = JSON.parse(localStorage.getItem('localgame'))
+    console.log(localgame)
     if(localgame != null){
 
         console.log(localgame)
@@ -56,11 +59,41 @@ window.onload = async function(){
 
         p.innerText = `Recupero Dati Giocatori da ${localgame.serverkey}`
 
-        await reoladplayer()
+        const nomeplayer = localgame.nameplayer
+
+        localgame.players = await getDataForNode(`gameserver/${localgame.serverkey}/players`)
+
+        DataMainplayer = createplayer(nomeplayer)
 
         gamescena.style.backgroundImage = `url(../img/scene/background/${localgame.scena}.jpg)`
 
         screenchange('gamepage','block',1)
+
+        setInterval(async function (){
+            const nameplayer = localgame.nameplayer
+        
+            let tplayer = await getDataForNode(`gameserver/${localgame.serverkey}/players`)
+        
+            if(!tplayer[nameplayer]){
+                
+                tplayer[nameplayer] = localgame.players[nameplayer]
+            }
+        
+            for(const chiave in localgame.players){
+                if(nameplayer !== chiave){
+                    localgame.players[chiave] = tplayer[chiave]
+                    createplayer(chiave)
+                }
+            }
+
+            const GravityPos = localgame.players[nameplayer]
+            if(GravityPos.posy < 90 && localscena[Math.floor(GravityPos.posy/10) + 1][Math.round(GravityPos.posx/10)] === 'air'){
+                ObjectivesMoveDown(DataMainplayer,localgame.players[nameplayer],0.2)
+            }
+        
+            localgame.players[nameplayer].ping = 1
+            await addElementToNode(`gameserver/${localgame.serverkey}/players/${nameplayer}/`,localgame.players[nameplayer])
+        },10)
 
     }else{
         history.replaceState(null, '', '../index.html');
@@ -100,6 +133,50 @@ window.isStringContains = function(string,chars){
     return false
 }
 
+window.ObjectivesMoveUp = function(objectives,pos,movepx){
+    const cordinates = (pos.posy - movepx)-20;
+    if(cordinates > 0){
+        pos.posy = cordinates;
+        objectives.style.top = `${cordinates}%`
+        return 1
+    }
+    return 0
+}
+
+window.ObjectivesMoveDown = function(objectives,pos,movepx){
+    const cordinates = pos.posy + movepx;
+    if(cordinates < 90){
+        pos.posy = cordinates; 
+        objectives.style.top = `${cordinates}%`
+        return 1
+    }
+    return 0
+}
+
+window.ObjectivesMoveLeft = function(objectives,pos,movepx){
+    const cordinates = pos.posx - movepx;
+    if(cordinates >= 0){
+        pos.posx = cordinates;
+        pos.rotation = -1;
+        objectives.style.left = `${cordinates}%`
+        objectives.style.transform = 'scaleX(-1)'
+        return 1
+    }
+    return 0
+}
+
+window.ObjectivesMoveRight = function(objectives,pos,movepx){
+    const cordinates = pos.posx + movepx;
+    if(cordinates < 100 - (objectives.offsetWidth / gamescena.offsetWidth * 100)){
+        pos.posx = cordinates;
+        pos.rotation = 1;
+        objectives.style.left = `${cordinates}%`;
+        objectives.style.transform = 'scaleX(1)'
+        return 1
+    }
+    return 0
+}
+
 setInterval(async function(){
 
     const nameplayer = localgame.nameplayer
@@ -120,54 +197,24 @@ setInterval(async function(){
 
 },5000)
 
-setInterval(async function (){
-    const nameplayer = localgame.nameplayer
-
-    await reoladplayer(nameplayer)
-
-    localgame.players[nameplayer].ping = 1
-
-    await addElementToNode(`gameserver/${localgame.serverkey}/players/${nameplayer}/`,localgame.players[nameplayer])
-
-},10)
-
-
-window.reoladplayer = async function(exclude){
-
-    let tplayer = await getDataForNode(`gameserver/${localgame.serverkey}/players`)
-
-    if(typeof tplayer !=='object'){
-        tplayer = {}
+window.createplayer = function(id){
+    let player = document.getElementById(`${id}`)
+    if(!player){
+        const div = document.createElement('div')
+        const p= document.createElement('p')
+        p.innerText = id
+        div.appendChild(p)
+        div.id = id
+        div.style.backgroundImage = `url(../img/player/walk.gif)`
+        div.classList.add('players')
+        gamescena.appendChild(div)
+        player = div
     }
-
-    const nameplayer = localgame.nameplayer
-
-    if(!tplayer[nameplayer]){
-        
-        tplayer[nameplayer] = localgame.players[nameplayer]
-    }
-
-    localgame.players = tplayer
-
-    for(const chiave in localgame.players){
-        if(exclude !== chiave){
-            let player = document.getElementById(`${chiave}`)
-            if(!player){
-                const div = document.createElement('div')
-                const p= document.createElement('p')
-                p.innerText = chiave
-                div.appendChild(p)
-                div.id = chiave
-                div.style.backgroundImage = `url(../img/player/walk.gif)`
-                div.classList.add('players')
-                gamescena.appendChild(div)
-                player = div
-            }
-            const playerData = localgame.players[chiave];
-            player.style.left = `${playerData.posx*10}%`
-            player.style.top = `${playerData.posy*10}%`
-        }
-    }
+    const playerData = localgame.players[id];
+    player.style.left = `${playerData.posx}%`
+    player.style.top = `${playerData.posy}%`
+    player.style.transform = `scaleX(${playerData.rotation})`
+    return player
 }
 
 window.controlconnection = async function(playerkey){
@@ -180,9 +227,14 @@ window.controlconnection = async function(playerkey){
     }
 }
 
+const playeraction = [ObjectivesMoveLeft, ObjectivesMoveRight,ObjectivesMoveUp];
+
 document.addEventListener('keydown', function(event) {
-    if (event.key === playercommand[0]) {
-        console.log('Hai premuto il tasto Enter!');
+    for (const key in playercommand){
+        if(playercommand[key] === event.key || playercommand[key] === (event.key).toLowerCase()){
+            playeraction[key](DataMainplayer,localgame.players[localgame.nameplayer],1)
+            
+        }
     }
 });
 

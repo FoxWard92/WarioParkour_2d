@@ -189,6 +189,7 @@ window.EntraInGame = async function (gameserver,chiave){
     }
 
     await addElementToNode(`gameserver/${chiave}/players/${localdata.dati.name}`, {
+        rotation:1,
         posx:0,
         posy:9,
         ping:1
