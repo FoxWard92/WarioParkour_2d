@@ -142,7 +142,7 @@ window.ReloadServerInfo = function(gameserver,chiave){
     }
 
     if(gameserver !=  null){
-        listaplayer.firstElementChild.src = `../img/scene/icon/${gameserver[chiave].scena}.jpg`
+        listaplayer.firstElementChild.style.backgroundImage = `url(../img/scene/icon/${gameserver[chiave].scena}.jpg)`
 
         listaplayer.lastElementChild.remove()
     
@@ -157,10 +157,6 @@ window.ReloadServerInfo = function(gameserver,chiave){
         }
 
         listaplayer.appendChild(ul)
-
-        const p = document.createElement('p')
-
-        p.innerText = `Max Player | ${gameserver[chiave].players ? Object.keys(gameserver[chiave].players).length:0}/${gameserver[chiave].maxplayer} | Scena | ${gameserver[chiave].scena}`
     
         const button =  document.createElement('button')
 
@@ -179,8 +175,6 @@ window.ReloadServerInfo = function(gameserver,chiave){
             }
             loadbar.classList.remove('atload')
         } 
-
-        ServerInfo.appendChild(p)
 
         ServerInfo.appendChild(button)
 
