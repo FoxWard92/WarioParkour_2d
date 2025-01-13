@@ -83,7 +83,7 @@ window.onload = async function(){
                 tplayer[nameplayer] = localgame.players[nameplayer]
             }
         
-            for(const chiave in localgame.players){
+            for(const chiave in tplayer){
                 if(nameplayer !== chiave){
                     localgame.players[chiave] = tplayer[chiave]
                     createplayer(chiave)
