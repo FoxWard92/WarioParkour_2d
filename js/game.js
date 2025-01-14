@@ -27,6 +27,8 @@ let localscena = null
 
 let DataMainplayer = null
 
+let GlobalJumpMove = true
+
 let GlobalGravityMove = false
 
 const p = document.getElementById('loadcmd')
@@ -54,7 +56,7 @@ window.onload = async function(){
                 const div = document.createElement('div')
                 div.classList.add(`${localscena[i][j]}`)
                 div.classList.add(`gameobject`)
-                if(localscena[i][j] !== 'air'){
+                if(localscena[i][j]){
                     div.style.backgroundImage = `url(../img/props/${localscena[i][j]}/${localgame.scena}.jpg)`
                 }
                 gamescena.appendChild(div)
@@ -73,9 +75,12 @@ window.onload = async function(){
 
         screenchange('gamepage','block',1)
 
+        gameLoop();
+
         setInterval(async function (){
+
             const nameplayer = localgame.nameplayer
-        
+
             let tplayer = await getDataForNode(`gameserver/${localgame.serverkey}/players`)
         
             if(!tplayer[nameplayer]){
@@ -90,13 +95,21 @@ window.onload = async function(){
                 }
             }
 
-            const GravityPos = localgame.players[nameplayer]
-            if(GravityPos.posy < 85 && localscena[Math.floor(GravityPos.posy/10) + 1][Math.round(GravityPos.posx/10)] === 'air'){
-                ObjectivesMoveDown(DataMainplayer,localgame.players[nameplayer],0.2)
-                GlobalGravityMove = false
+            const player = localgame.players[nameplayer];
+
+            if (player.posy < 90 && GlobalJumpMove) {
+                GlobalGravityMove = false;
+              for(var i = 0; i < 10;i++){
+                setTimeout(function(){
+                    if(!ObjectivesMoveDown(DataMainplayer, player, 0.1)) {
+                        GlobalGravityMove = true
+                    }
+                   }
+                )}
             }else{
-                GlobalGravityMove = true
+                GlobalGravityMove = true;
             }
+
         
             localgame.players[nameplayer].ping = 1
             await addElementToNode(`gameserver/${localgame.serverkey}/players/${nameplayer}/`,localgame.players[nameplayer])
@@ -142,7 +155,7 @@ window.isStringContains = function(string,chars){
 
 window.ObjectivesMoveUp = function(objectives,pos,movepx){
     const cordinates = pos.posy - movepx;
-    if(cordinates > 0){
+    if(cordinates > 0 && !localscena[Math.floor(cordinates / 10)][Math.round(pos.posx / 10)]){
         pos.posy = cordinates;
         objectives.style.top = `${cordinates}%`
         return 1
@@ -152,7 +165,7 @@ window.ObjectivesMoveUp = function(objectives,pos,movepx){
 
 window.ObjectivesMoveDown = function(objectives,pos,movepx){
     const cordinates = pos.posy + movepx;
-    if(cordinates < 90){
+    if(cordinates < 90 && !localscena[Math.floor(cordinates / 10) + 1][Math.round(pos.posx / 10)]){
         pos.posy = cordinates; 
         objectives.style.top = `${cordinates}%`
         return 1
@@ -162,7 +175,7 @@ window.ObjectivesMoveDown = function(objectives,pos,movepx){
 
 window.ObjectivesMoveLeft = function(objectives,pos,movepx){
     const cordinates = pos.posx - movepx;
-    if(cordinates >= 0){
+    if(!localscena[Math.round(pos.posy / 10)][Math.round(cordinates / 10)] && cordinates >= 0){
         pos.posx = cordinates;
         pos.rotation = -1;
         objectives.style.left = `${cordinates}%`
@@ -174,7 +187,7 @@ window.ObjectivesMoveLeft = function(objectives,pos,movepx){
 
 window.ObjectivesMoveRight = function(objectives,pos,movepx){
     const cordinates = pos.posx + movepx;
-    if(cordinates < 100 - (objectives.offsetWidth / gamescena.offsetWidth * 100)){
+    if(!localscena[Math.round(pos.posy / 10)][Math.round(cordinates / 10)] && cordinates < 100 - (objectives.offsetWidth / gamescena.offsetWidth * 100)){
         pos.posx = cordinates;
         pos.rotation = 1;
         objectives.style.left = `${cordinates}%`;
@@ -236,41 +249,61 @@ window.controlconnection = async function(playerkey){
 
 const playeraction = [ObjectivesMoveLeft, ObjectivesMoveRight, ObjectivesMoveUp, ObjectivesMoveDown];
 const keysPressed = {};
-let lastFrameTime = performance.now();
 
 document.addEventListener('keydown', function (event) {
-  for (const key in playercommand) {
-    if (playercommand[key] === event.key || playercommand[key] === event.key.toLowerCase()) {
-      keysPressed[playercommand[key]] = true;
+    for (const key in playercommand) {
+      if (playercommand[key] === event.key || playercommand[key] === event.key.toLowerCase()) {
+        keysPressed[key] = true;
+  
+        if (event.key === 'Escape') {
+
+            localStorage.removeItem('localgame')
+
+            history.replaceState(null, '', '../index.html');
+
+            location.reload();
+        }
+      }
     }
-  }
-});
-
-document.addEventListener('keyup', function (event) {
-  for (const key in playercommand) {
-    if (playercommand[key] === event.key || playercommand[key] === event.key.toLowerCase()) {
-      keysPressed[playercommand[key]] = false;
+  });
+  
+  document.addEventListener('keyup', function (event) {
+    for (const key in playercommand) {
+      if (playercommand[key] === event.key || playercommand[key] === event.key.toLowerCase()) {
+        keysPressed[key] = false;
+      }
     }
-  }
-});
+  });
 
-function gameLoop() {
+  window.gameLoop = function () {
+    const player = localgame.players[localgame.nameplayer];
 
-    
-  const currentTime = performance.now();
-  const deltaTime = (currentTime - lastFrameTime) / 1000;
-  lastFrameTime = currentTime;
+    for (const key in playercommand) {
+        if (keysPressed[key]) {
+            if (key == 2) {
+                if (GlobalGravityMove && GlobalJumpMove) {
+                    GlobalJumpMove = false;
+                    let i = 0;
+                    const jumpInterval = 8;
 
-  for (const key in playercommand) {
-    if (keysPressed[playercommand[key]] && (key != 2 || key == 2 && (GlobalGravityMove))) {
-        
-        playeraction[key](DataMainplayer, localgame.players[localgame.nameplayer], moveSpeed * deltaTime + (key == 2 ? 20:0));
+                    const jumpAction = setInterval(() => {
+                        playeraction[key](DataMainplayer, player, 1);
+                        i++;
+
+                        if (i >= 30) {
+                            clearInterval(jumpAction);
+                            GlobalJumpMove = true;
+                        }
+                    }, jumpInterval);
+                }
+            } else {
+                playeraction[key](DataMainplayer, player, 1);
+            }
+        }
     }
-  }
-  requestAnimationFrame(gameLoop);
-}
 
-gameLoop();
+    requestAnimationFrame(gameLoop);
+};
 
 window.getDataForNode = async function (NodeId) {
     const dbRef = ref(database, `/${NodeId}`);
