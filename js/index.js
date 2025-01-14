@@ -243,7 +243,7 @@ window.register = async function () {
     const password = document.getElementById('registerpassword')
     const confermapassword = document.getElementById('registerconfermapassword')
 
-    if(isStringContains(name.value,[' ']) || name.length > 50 || await getDataForNode(`utenti/${name.value}`)){
+    if(isStringContains(name.value,[' ']) || name.length > 30 || await getDataForNode(`utenti/${name.value}`)){
         Wrong(name); 
     }else if(isStringContains(password.value,[' ','|','.',':',',',';'])){
         Wrong(password);
