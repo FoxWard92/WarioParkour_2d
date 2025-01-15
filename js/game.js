@@ -37,7 +37,7 @@ const gamescena = document.getElementById('gamescena')
 
 const playercommand = ['a','d','w','escape']
 
-const moveSpeed = 50;
+const moveSpeed = 0.9;
 
 window.onload = async function(){
     localgame = JSON.parse(localStorage.getItem('localgame'))
@@ -287,7 +287,7 @@ document.addEventListener('keydown', function (event) {
                     const jumpInterval = 8;
 
                     const jumpAction = setInterval(() => {
-                        playeraction[key](DataMainplayer, player, 1);
+                        playeraction[key](DataMainplayer, player, moveSpeed);
                         i++;
 
                         if (i >= 30) {
@@ -297,7 +297,7 @@ document.addEventListener('keydown', function (event) {
                     }, jumpInterval);
                 }
             } else {
-                playeraction[key](DataMainplayer, player, 1);
+                playeraction[key](DataMainplayer, player, moveSpeed);
             }
         }
     }
