@@ -142,7 +142,7 @@ window.ReloadServerInfo = function(gameserver,chiave){
     }
 
     if(gameserver !=  null){
-        listaplayer.firstElementChild.style.backgroundImage = `url(../img/scene/background/${gameserver[chiave].scena}.jpg)`
+        listaplayer.firstElementChild.style.backgroundImage = `url(../img/scene/icons/${gameserver[chiave].scena}.jpg)`
 
         listaplayer.lastElementChild.remove()
     
